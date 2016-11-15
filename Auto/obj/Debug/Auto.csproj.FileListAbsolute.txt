@@ -1,0 +1,10 @@
+E:\School2016.2\Prog\Auto\Auto\bin\Debug\Auto.exe.config
+E:\School2016.2\Prog\Auto\Auto\bin\Debug\Auto.exe
+E:\School2016.2\Prog\Auto\Auto\bin\Debug\Auto.pdb
+E:\School2016.2\Prog\Auto\Auto\obj\Debug\Auto.csprojResolveAssemblyReference.cache
+E:\School2016.2\Prog\Auto\Auto\obj\Debug\Auto.csproj.GenerateResource.Cache
+E:\School2016.2\Prog\Auto\Auto\obj\Debug\Auto.exe
+E:\School2016.2\Prog\Auto\Auto\obj\Debug\Auto.pdb
+E:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.Form1.resources
+E:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.Properties.Resources.resources
+E:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.frmTestSeparateDirs.resources

@@ -1,0 +1,7 @@
+This application uses parts of the 7-Zip program. 7-Zip is licensed under the GNU LGPL license.
+
+For more information, please visit the following webpages:
+
+7-Zip website: www.7-zip.org
+
+You can receive a copy of the GNU Lesser General Public License from http://www.gnu.org/
