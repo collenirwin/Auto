@@ -22,5 +22,17 @@ namespace AutoNS.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string explorerPath {
+            get {
+                return ((string)(this["explorerPath"]));
+            }
+            set {
+                this["explorerPath"] = value;
+            }
+        }
     }
 }

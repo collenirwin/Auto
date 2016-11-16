@@ -8,3 +8,4 @@ E:\School2016.2\Prog\Auto\Auto\obj\Debug\Auto.pdb
 E:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.Form1.resources
 E:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.Properties.Resources.resources
 E:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.frmTestSeparateDirs.resources
+E:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.frmMain.resources
