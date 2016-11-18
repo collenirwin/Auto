@@ -31,11 +31,11 @@ namespace AutoNS {
 
                 // set process info
                 process.StartInfo = new ProcessStartInfo {
-                    FileName = fileName,
+                    FileName  = fileName,
                     Arguments = args,
-                    RedirectStandardInput = true,
+                    RedirectStandardInput  = true,
                     RedirectStandardOutput = true,
-                    RedirectStandardError = true,
+                    RedirectStandardError  = true,
                     UseShellExecute = false,
                     WindowStyle = ProcessWindowStyle.Hidden,
                     CreateNoWindow = true,
@@ -115,7 +115,7 @@ namespace AutoNS {
         /// <param name="currentDir">directory to look in</param>
         /// <param name="outputDir">directory to create subdirectories within</param>
         /// <param name="regex">match string</param>
-        /// <returns></returns>
+        /// <returns>false if an exception was thrown</returns>
         public static bool moveToSeparateDirs(DirectoryInfo currentDir, DirectoryInfo outputDir = null, string regex = "") {
             try {
 
@@ -129,22 +129,25 @@ namespace AutoNS {
 
                 foreach (FileInfo file in currentDir.GetFiles()) {
 
-                    // if we're given a matchstring
-                    if (regex != "") {
-                        if (Regex.IsMatch(file.Name, regex)) {
+                    if (file.Exists) {
 
-                            // move file to a directory of the matched string
-                            safeMove(
-                                file.FullName, 
-                                outPath + "\\" + Regex.Match(file.Name, regex).ToString(),
-                                file.Name
-                            );
+                        // if we're given a matchstring
+                        if (regex != "") {
+
+                            if (Regex.IsMatch(file.Name, regex)) {
+
+                                // move file to a directory of the matched string
+                                safeMove(
+                                    file.FullName,
+                                    outPath + "\\" + Regex.Match(file.Name, regex).ToString(),
+                                    file.Name
+                                );
+                            }
+                        } else {
+
+                            // move file to a directory of the same name
+                            safeMove(file.FullName, outPath + "\\" + file.Name, file.Name);
                         }
-
-                    } else {
-
-                        // move file to a directory of the same name
-                        safeMove(file.FullName, outPath + "\\" + file.Name, file.Name);
                     }
                 }
 

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace BoinEditNS {
@@ -16,7 +14,7 @@ namespace BoinEditNS {
         Color _dirBackColor = Color.FromArgb(255, 255, 255, 255);
         
         string ioErrorMsg = "";
-        const string _UNINITIALIZED = "uninit";
+        const string _UNINITIALIZED = "dtv_uninit";
 
         #endregion
 
@@ -144,17 +142,16 @@ namespace BoinEditNS {
             try {
                 foreach (DirectoryInfo di in dir.GetDirectories()) {
                     if (di.Exists) {
-                        TreeNode itm = new TreeNode();
-                        itm.NodeFont = new Font(this.Font, FontStyle.Bold);
+                        TreeNode itm  = new TreeNode();
+                        itm.NodeFont  = new Font(this.Font, FontStyle.Bold);
                         itm.ForeColor = _dirColor;
-                        itm.Text = di.Name + "\\";
-                        itm.Tag = di;
                         itm.BackColor = _dirBackColor;
+                        itm.Text = di.Name;
+                        itm.Tag  = di;
                         
-
                         nodes.Add(itm);
 
-                        itm.Text = di.Name + "\\"; // Hack required to redraw node correctly after making it bold
+                        itm.Text = di.Name; // Hack required to redraw node correctly after making it bold
 
                         if (recursive) {
                             foreach (DirectoryInfo subDir in di.GetDirectories()) {
@@ -189,10 +186,11 @@ namespace BoinEditNS {
         // so we get the + button to indicate non-empty directory
         private void addTempItem(DirectoryInfo dir, TreeNodeCollection nodes) {
             try {
+
                 // if the dir is not empty
                 if (dir.GetDirectories().Length != 0 || dir.GetFiles().Length != 0) {
                     TreeNode node = new TreeNode();
-                    node.Tag = _UNINITIALIZED;
+                    node.Tag  = _UNINITIALIZED;
                     node.Text = "...";
                     nodes.Add(node);
                 }
