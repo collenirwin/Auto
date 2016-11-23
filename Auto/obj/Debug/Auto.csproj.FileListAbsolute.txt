@@ -9,3 +9,16 @@ E:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.Form1.resources
 E:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.Properties.Resources.resources
 E:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.frmTestSeparateDirs.resources
 E:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.frmMain.resources
+F:\School2016.2\Prog\Auto\Auto\bin\Debug\Auto.exe.config
+F:\School2016.2\Prog\Auto\Auto\obj\Debug\Auto.exe
+F:\School2016.2\Prog\Auto\Auto\obj\Debug\Auto.pdb
+E:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.AutoConsole.resources
+F:\School2016.2\Prog\Auto\Auto\bin\Debug\Auto.exe
+F:\School2016.2\Prog\Auto\Auto\bin\Debug\Auto.pdb
+F:\School2016.2\Prog\Auto\Auto\obj\Debug\Auto.csprojResolveAssemblyReference.cache
+F:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.AutoConsole.resources
+F:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.Form1.resources
+F:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.frmMain.resources
+F:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.frmTestSeparateDirs.resources
+F:\School2016.2\Prog\Auto\Auto\obj\Debug\AutoNS.Properties.Resources.resources
+F:\School2016.2\Prog\Auto\Auto\obj\Debug\Auto.csproj.GenerateResource.Cache

@@ -45,6 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auto.cs" />
+    <Compile Include="AutoConsole.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AutoConsole.Designer.cs">
+      <DependentUpon>AutoConsole.cs</DependentUpon>
+    </Compile>
     <Compile Include="BoinBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -74,6 +80,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AutoConsole.resx">
+      <DependentUpon>AutoConsole.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

@@ -27,18 +27,17 @@
             this.spltMain = new System.Windows.Forms.SplitContainer();
             this.msMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.eDITToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.vIEWToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extractArchiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.organizeFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.runSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.organizeSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.eDITToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generalSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.txtConsole = new System.Windows.Forms.RichTextBox();
-            this.txtConsoleInput = new System.Windows.Forms.RichTextBox();
+            this.organizeSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.vIEWToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnOpenDir = new BoinBoxNS.BoinBox();
             this.explorer = new BoinEditNS.DirTreeView();
+            this.console = new AutoNS.AutoConsole();
             ((System.ComponentModel.ISupportInitialize)(this.spltSideBar)).BeginInit();
             this.spltSideBar.Panel1.SuspendLayout();
             this.spltSideBar.Panel2.SuspendLayout();
@@ -66,7 +65,7 @@
             // 
             this.spltSideBar.Panel2.BackColor = System.Drawing.SystemColors.Control;
             this.spltSideBar.Panel2.Controls.Add(this.spltMain);
-            this.spltSideBar.Size = new System.Drawing.Size(648, 362);
+            this.spltSideBar.Size = new System.Drawing.Size(684, 338);
             this.spltSideBar.SplitterDistance = 172;
             this.spltSideBar.TabIndex = 1;
             // 
@@ -80,10 +79,9 @@
             // 
             // spltMain.Panel2
             // 
-            this.spltMain.Panel2.Controls.Add(this.txtConsole);
-            this.spltMain.Panel2.Controls.Add(this.txtConsoleInput);
-            this.spltMain.Size = new System.Drawing.Size(472, 362);
-            this.spltMain.SplitterDistance = 204;
+            this.spltMain.Panel2.Controls.Add(this.console);
+            this.spltMain.Size = new System.Drawing.Size(508, 338);
+            this.spltMain.SplitterDistance = 180;
             this.spltMain.TabIndex = 0;
             // 
             // msMain
@@ -96,7 +94,7 @@
             this.vIEWToolStripMenuItem});
             this.msMain.Location = new System.Drawing.Point(0, 0);
             this.msMain.Name = "msMain";
-            this.msMain.Size = new System.Drawing.Size(648, 24);
+            this.msMain.Size = new System.Drawing.Size(684, 24);
             this.msMain.TabIndex = 1;
             // 
             // fileToolStripMenuItem
@@ -108,22 +106,6 @@
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
             this.fileToolStripMenuItem.Text = "FILE";
-            // 
-            // eDITToolStripMenuItem
-            // 
-            this.eDITToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.generalSettingsToolStripMenuItem,
-            this.organizeSettingsToolStripMenuItem,
-            this.runSettingsToolStripMenuItem});
-            this.eDITToolStripMenuItem.Name = "eDITToolStripMenuItem";
-            this.eDITToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
-            this.eDITToolStripMenuItem.Text = "EDIT";
-            // 
-            // vIEWToolStripMenuItem
-            // 
-            this.vIEWToolStripMenuItem.Name = "vIEWToolStripMenuItem";
-            this.vIEWToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
-            this.vIEWToolStripMenuItem.Text = "VIEW";
             // 
             // openDirectoryToolStripMenuItem
             // 
@@ -146,17 +128,15 @@
             this.organizeFilesToolStripMenuItem.Text = "Organize";
             this.organizeFilesToolStripMenuItem.Click += new System.EventHandler(this.organizeFilesToolStripMenuItem_Click);
             // 
-            // runSettingsToolStripMenuItem
+            // eDITToolStripMenuItem
             // 
-            this.runSettingsToolStripMenuItem.Name = "runSettingsToolStripMenuItem";
-            this.runSettingsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
-            this.runSettingsToolStripMenuItem.Text = "Run Settings";
-            // 
-            // organizeSettingsToolStripMenuItem
-            // 
-            this.organizeSettingsToolStripMenuItem.Name = "organizeSettingsToolStripMenuItem";
-            this.organizeSettingsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
-            this.organizeSettingsToolStripMenuItem.Text = "Organize Settings";
+            this.eDITToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.generalSettingsToolStripMenuItem,
+            this.organizeSettingsToolStripMenuItem,
+            this.runSettingsToolStripMenuItem});
+            this.eDITToolStripMenuItem.Name = "eDITToolStripMenuItem";
+            this.eDITToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.eDITToolStripMenuItem.Text = "EDIT";
             // 
             // generalSettingsToolStripMenuItem
             // 
@@ -164,40 +144,23 @@
             this.generalSettingsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.generalSettingsToolStripMenuItem.Text = "All Settings";
             // 
-            // txtConsole
+            // organizeSettingsToolStripMenuItem
             // 
-            this.txtConsole.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
-            this.txtConsole.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtConsole.DetectUrls = false;
-            this.txtConsole.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtConsole.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtConsole.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.txtConsole.Location = new System.Drawing.Point(0, 0);
-            this.txtConsole.Name = "txtConsole";
-            this.txtConsole.ReadOnly = true;
-            this.txtConsole.Size = new System.Drawing.Size(472, 131);
-            this.txtConsole.TabIndex = 2;
-            this.txtConsole.TabStop = false;
-            this.txtConsole.Text = "";
+            this.organizeSettingsToolStripMenuItem.Name = "organizeSettingsToolStripMenuItem";
+            this.organizeSettingsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.organizeSettingsToolStripMenuItem.Text = "Organize Settings";
             // 
-            // txtConsoleInput
+            // runSettingsToolStripMenuItem
             // 
-            this.txtConsoleInput.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(74)))), ((int)(((byte)(74)))));
-            this.txtConsoleInput.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtConsoleInput.DetectUrls = false;
-            this.txtConsoleInput.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.txtConsoleInput.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtConsoleInput.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.txtConsoleInput.Location = new System.Drawing.Point(0, 131);
-            this.txtConsoleInput.Multiline = false;
-            this.txtConsoleInput.Name = "txtConsoleInput";
-            this.txtConsoleInput.Size = new System.Drawing.Size(472, 23);
-            this.txtConsoleInput.TabIndex = 0;
-            this.txtConsoleInput.Text = ">:";
-            this.txtConsoleInput.SelectionChanged += new System.EventHandler(this.txtConsoleInput_SelectionChanged);
-            this.txtConsoleInput.Click += new System.EventHandler(this.txtConsoleInput_SelectionChanged);
-            this.txtConsoleInput.TextChanged += new System.EventHandler(this.txtConsoleInput_TextChanged);
-            this.txtConsoleInput.Enter += new System.EventHandler(this.txtConsoleInput_SelectionChanged);
+            this.runSettingsToolStripMenuItem.Name = "runSettingsToolStripMenuItem";
+            this.runSettingsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.runSettingsToolStripMenuItem.Text = "Run Settings";
+            // 
+            // vIEWToolStripMenuItem
+            // 
+            this.vIEWToolStripMenuItem.Name = "vIEWToolStripMenuItem";
+            this.vIEWToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.vIEWToolStripMenuItem.Text = "VIEW";
             // 
             // btnOpenDir
             // 
@@ -234,19 +197,29 @@
             this.explorer.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.explorer.Location = new System.Drawing.Point(0, 0);
             this.explorer.Name = "explorer";
-            this.explorer.Size = new System.Drawing.Size(172, 362);
+            this.explorer.Size = new System.Drawing.Size(172, 338);
             this.explorer.TabIndex = 0;
+            // 
+            // console
+            // 
+            this.console.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.console.Location = new System.Drawing.Point(0, 0);
+            this.console.Name = "console";
+            this.console.Size = new System.Drawing.Size(508, 154);
+            this.console.TabIndex = 0;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(648, 386);
+            this.ClientSize = new System.Drawing.Size(684, 362);
             this.Controls.Add(this.spltSideBar);
             this.Controls.Add(this.msMain);
             this.MainMenuStrip = this.msMain;
+            this.MinimumSize = new System.Drawing.Size(700, 400);
             this.Name = "frmMain";
             this.Text = "Auto";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.spltSideBar.Panel1.ResumeLayout(false);
             this.spltSideBar.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.spltSideBar)).EndInit();
@@ -277,8 +250,7 @@
         private System.Windows.Forms.ToolStripMenuItem generalSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem organizeSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem runSettingsToolStripMenuItem;
-        private System.Windows.Forms.RichTextBox txtConsole;
-        private System.Windows.Forms.RichTextBox txtConsoleInput;
+        private AutoConsole console;
 
 
     }
