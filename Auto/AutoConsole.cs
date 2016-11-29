@@ -155,9 +155,14 @@ namespace AutoNS {
         }
 
         private void showHistoryItem(int up) {
+            if (history.Count == 0) {
+                historyIndex = -1;
+                return;
+            }
+
             historyIndex += up;
 
-            if (history.Count == 0 || historyIndex < 0) {
+            if (historyIndex < 0) {
                 historyIndex = 0;
             } else if (historyIndex > history.Count - 1) {
                 historyIndex = history.Count - 1;
