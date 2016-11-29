@@ -108,6 +108,40 @@ namespace AutoNS {
             _prompt = newPrompt;
         }
 
+        /// <summary>
+        /// Sends a command to the process running within 
+        /// </summary>
+        /// <param name="command">command to send</param>
+        /// <param name="showErrorOnConsole">if there's an error, this controls whether it is displayed on the console</param>
+        /// <returns>false if an exception is thrown</returns>
+        public bool sendCommand(string command, bool showErrorOnConsole = true) {
+
+            try {
+                string commandLower = command.ToLower();
+
+                // TODO?: do something when the command is "exit"?
+                if (commandLower == "clear" || commandLower == "cls") {
+                    txtConsole.Clear();
+                    txtConsole.Refresh();
+                } else {
+
+                    // pass the command over stdin
+                    _process.StandardInput.WriteLine(command);
+                }
+
+                addCommand(command);
+
+            } catch (Exception ex) {
+                if (showErrorOnConsole) {
+                    updateConsole("[AutoConsole Exception] " + ex.Message + Environment.NewLine, errorColor);
+                }
+                
+                return false;
+            }
+
+            return true;
+        }
+
         private void txtConsoleInput_KeyDown(object sender, KeyEventArgs e) {
 
             // on enter
@@ -124,25 +158,9 @@ namespace AutoNS {
                 // we have a command
                 if (txtConsoleInput.TextLength > prompt.Length) {
 
-                    try {
-                        string command = txtConsoleInput.Text.Substring(prompt.Length).Trim();
-                        string commandLower = command.ToLower();
-
-                        if (commandLower == "clear" || commandLower == "cls") {
-                            txtConsole.Clear();
-                            txtConsole.Refresh();
-                        } else {
-
-                            // pass the command over stdin
-                            _process.StandardInput.WriteLine(command);
-                        }
-
-                        addCommand(command);
-
-                    } catch (Exception ex) {
-                        updateConsole("[AutoConsole Exception] " + ex.Message + Environment.NewLine, errorColor);
-                    }
-
+                    // send it
+                    sendCommand(txtConsoleInput.Text.Substring(prompt.Length).Trim());
+                    
                     // erase the command
                     txtConsoleInput.Text = prompt;
                 }
