@@ -109,7 +109,7 @@ namespace AutoNS {
         }
 
         /// <summary>
-        /// Sends a command to the process running within 
+        /// Sends a command to the process running within AutoConsole
         /// </summary>
         /// <param name="command">command to send</param>
         /// <param name="showErrorOnConsole">if there's an error, this controls whether it is displayed on the console</param>
