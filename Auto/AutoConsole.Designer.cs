@@ -62,7 +62,6 @@
             this.txtConsoleInput.TextChanged += new System.EventHandler(this.txtConsoleInput_TextChanged);
             this.txtConsoleInput.Enter += new System.EventHandler(this.txtConsoleInput_SelectionChanged);
             this.txtConsoleInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtConsoleInput_KeyDown);
-            this.txtConsoleInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtConsoleInput_KeyPress);
             // 
             // AutoConsole
             // 

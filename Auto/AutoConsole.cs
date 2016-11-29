@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace AutoNS {
@@ -13,13 +11,17 @@ namespace AutoNS {
 
         #region Private
 
+        private const int HISTORY_MAX = 100;
+        private List<string> history  = new List<string>(HISTORY_MAX);
+        private int historyIndex      = -1;
+
         private Color _outputColor = Color.LightBlue;
         private Color _errorColor  = Color.LightCoral;
 
         private Process _process;
 
         private string _prompt = ">:";
-        private string _path = "cmd";
+        private string _path   = "cmd";
 
         private delegate void _updateConsole(string text, Color color);
 
@@ -55,6 +57,10 @@ namespace AutoNS {
         /// </summary>
         public string path {
             get { return _path; }
+        }
+
+        public string lastCommand {
+            get { return history[0]; }
         }
 
         #endregion
@@ -124,13 +130,14 @@ namespace AutoNS {
 
                         if (commandLower == "clear" || commandLower == "cls") {
                             txtConsole.Clear();
-                        } else if (commandLower == "exit") {
-                            stop();
+                            txtConsole.Refresh();
                         } else {
 
                             // pass the command over stdin
                             _process.StandardInput.WriteLine(command);
                         }
+
+                        addCommand(command);
 
                     } catch (Exception ex) {
                         updateConsole("[AutoConsole Exception] " + ex.Message + Environment.NewLine, errorColor);
@@ -139,7 +146,39 @@ namespace AutoNS {
                     // erase the command
                     txtConsoleInput.Text = prompt;
                 }
+
+            } else if (e.KeyCode == Keys.Up) { // going up in history
+                showHistoryItem(1);
+            } else if (e.KeyCode == Keys.Down) { // going down in history
+                showHistoryItem(-1);
             }
+        }
+
+        private void showHistoryItem(int up) {
+            historyIndex += up;
+
+            if (history.Count == 0 || historyIndex < 0) {
+                historyIndex = 0;
+            } else if (historyIndex > history.Count - 1) {
+                historyIndex = history.Count - 1;
+            }
+
+            txtConsoleInput.Text = prompt + history[historyIndex];
+        }
+
+        // add a command to history, but keep history.Count below HISTORY_MAX
+        private void addCommand(string command) {
+
+            // remove from the end if we reach the max
+            if (history.Count == HISTORY_MAX) {
+                history.RemoveAt(HISTORY_MAX - 1);
+            }
+
+            // add to the beginning
+            history.Insert(0, command);
+
+            // reset historyIndex
+            historyIndex = -1;
         }
 
         private void txtConsoleInput_TextChanged(object sender, EventArgs e) {
@@ -157,11 +196,6 @@ namespace AutoNS {
             if (txtConsoleInput.SelectionStart < prompt.Length) {
                 txtConsoleInput.SelectionStart = prompt.Length;
             }
-        }
-
-        private void txtConsoleInput_KeyPress(object sender, KeyPressEventArgs e) {
-
-            
         }
 
         public void start(string fileName, string args = "") {
