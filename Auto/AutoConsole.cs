@@ -74,25 +74,30 @@ namespace AutoNS {
         }
 
         private void updateConsole(string text, Color color) {
+            try {
 
-            // thread safety
-            if (txtConsole.InvokeRequired) {
-                _updateConsole uc = new _updateConsole(updateConsole);
-                txtConsole.Invoke(uc, new object[] { text, color });
-            } else {
-                int start = txtConsole.TextLength;
+                // thread safety
+                if (txtConsole.InvokeRequired) {
+                    _updateConsole uc = new _updateConsole(updateConsole);
+                    txtConsole.Invoke(uc, new object[] { text, color });
+                } else {
+                    int start = txtConsole.TextLength;
 
-                // add text
-                txtConsole.AppendText(text);
+                    // add text
+                    txtConsole.AppendText(text);
 
-                // color text
-                txtConsole.SelectionStart  = start;
-                txtConsole.SelectionLength = text.Length;
-                txtConsole.SelectionColor  = color;
-                txtConsole.SelectionLength = 0;
+                    // color text
+                    txtConsole.SelectionStart = start;
+                    txtConsole.SelectionLength = text.Length;
+                    txtConsole.SelectionColor = color;
+                    txtConsole.SelectionLength = 0;
 
-                txtConsole.SelectionStart = txtConsole.TextLength - 1;
-                txtConsole.ScrollToCaret();
+                    txtConsole.SelectionStart = txtConsole.TextLength - 1;
+                    txtConsole.ScrollToCaret();
+                }
+
+            } catch { // the process is still running
+                stop();
             }
         }
 
@@ -119,10 +124,13 @@ namespace AutoNS {
             try {
                 string commandLower = command.ToLower();
 
-                // TODO?: do something when the command is "exit"?
                 if (commandLower == "clear" || commandLower == "cls") {
                     txtConsole.Clear();
                     txtConsole.Refresh();
+                } else if (commandLower == "reset") {
+                    kill();
+                    sendCommand("clear");
+                    start();
                 } else {
 
                     // pass the command over stdin
@@ -273,6 +281,26 @@ namespace AutoNS {
             return false;
         }
 
+        public bool kill() {
+            if (_process != null) {
+
+                try {
+                    _process.CancelOutputRead();
+                    _process.CancelErrorRead();
+                   
+                    _process.Kill();
+                    _process.Dispose();
+
+                    return true;
+
+                } catch {
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
         private void updateConsole(string text) {
             txtConsole.AppendText(text);
         }
@@ -288,6 +316,32 @@ namespace AutoNS {
                 updateConsole(e.Data + Environment.NewLine, errorColor);
             }
         }
+
+        #region Options
+
+        private void btnOptions_Click(object sender, EventArgs e) {
+
+            // toggle options menu
+            pnlOptions.Visible = !pnlOptions.Visible;
+        }
+
+        private void txtConsole_Click(object sender, EventArgs e) {
+            pnlOptions.Hide();
+        }
+
+        private void btnClear_Click(object sender, EventArgs e) {
+
+            // clear the console
+            sendCommand("clear");
+        }
+
+        private void btnReset_Click(object sender, EventArgs e) {
+
+            // stop and restart the console
+            sendCommand("reset");
+        }
+
+        #endregion
 
         #endregion
     }
