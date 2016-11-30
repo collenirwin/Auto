@@ -129,7 +129,6 @@ namespace AutoNS {
                     txtConsole.Refresh();
                 } else if (commandLower == "reset") {
                     kill();
-                    sendCommand("clear");
                     start();
                 } else {
 
