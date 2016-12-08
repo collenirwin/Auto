@@ -90,23 +90,16 @@
             this.btnReset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.btnReset.BorderColor = System.Drawing.Color.Empty;
             this.btnReset.BorderSize = 0;
-<<<<<<< HEAD
             this.btnReset.FakeDisabled = false;
-=======
->>>>>>> origin/master
             this.btnReset.FlatAppearance.BorderSize = 0;
             this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReset.Font = new System.Drawing.Font("Calibri", 9F);
             this.btnReset.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.btnReset.Location = new System.Drawing.Point(3, 32);
             this.btnReset.MouseDownBackColor = System.Drawing.Color.Empty;
-<<<<<<< HEAD
             this.btnReset.MouseDownForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.btnReset.MouseOverBackColor = System.Drawing.Color.Empty;
             this.btnReset.MouseOverForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-=======
-            this.btnReset.MouseOverBackColor = System.Drawing.Color.Empty;
->>>>>>> origin/master
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(75, 23);
             this.btnReset.TabIndex = 8;
@@ -120,23 +113,16 @@
             this.btnClear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.btnClear.BorderColor = System.Drawing.Color.Empty;
             this.btnClear.BorderSize = 0;
-<<<<<<< HEAD
             this.btnClear.FakeDisabled = false;
-=======
->>>>>>> origin/master
             this.btnClear.FlatAppearance.BorderSize = 0;
             this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClear.Font = new System.Drawing.Font("Calibri", 9F);
             this.btnClear.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.btnClear.Location = new System.Drawing.Point(3, 3);
             this.btnClear.MouseDownBackColor = System.Drawing.Color.Empty;
-<<<<<<< HEAD
             this.btnClear.MouseDownForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.btnClear.MouseOverBackColor = System.Drawing.Color.Empty;
             this.btnClear.MouseOverForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-=======
-            this.btnClear.MouseOverBackColor = System.Drawing.Color.Empty;
->>>>>>> origin/master
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(75, 23);
             this.btnClear.TabIndex = 7;
@@ -151,23 +137,16 @@
             this.btnOptions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.btnOptions.BorderColor = System.Drawing.Color.Empty;
             this.btnOptions.BorderSize = 0;
-<<<<<<< HEAD
             this.btnOptions.FakeDisabled = false;
-=======
->>>>>>> origin/master
             this.btnOptions.FlatAppearance.BorderSize = 0;
             this.btnOptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOptions.Font = new System.Drawing.Font("Calibri", 9F);
             this.btnOptions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.btnOptions.Location = new System.Drawing.Point(378, 187);
             this.btnOptions.MouseDownBackColor = System.Drawing.Color.Empty;
-<<<<<<< HEAD
             this.btnOptions.MouseDownForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.btnOptions.MouseOverBackColor = System.Drawing.Color.Empty;
             this.btnOptions.MouseOverForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-=======
-            this.btnOptions.MouseOverBackColor = System.Drawing.Color.Empty;
->>>>>>> origin/master
             this.btnOptions.Name = "btnOptions";
             this.btnOptions.Size = new System.Drawing.Size(75, 23);
             this.btnOptions.TabIndex = 5;
