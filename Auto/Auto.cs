@@ -1,10 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 
 namespace AutoNS {
+
+    public class ProgramOutput {
+        public string standardOutput { get; private set; }
+        public string standardError  { get; private set; }
+
+        public ProgramOutput(string standardOutput, string standardError) {
+            this.standardOutput = standardOutput;
+            this.standardError  = standardError;
+        }
+    }
 
     /// <summary>
     /// Provides functionality for running and manipulating files
@@ -12,6 +23,8 @@ namespace AutoNS {
     public static class Auto {
 
         public const string _7_ZIP_PATH = "7-Zip\\7z.exe";
+
+        public static BackgroundWorker bgw;
 
         /// <summary>
         /// Runs a program with redirected standard input.
@@ -23,8 +36,7 @@ namespace AutoNS {
         /// <param name="stdOut">standard output from the program</param>
         /// <param name="stdErr">standard error from the program</param>
         public static void run(string fileName, string args, string[] commands,
-            ref string stdOut, ref string stdErr)
-        {
+            ref string stdOut, ref string stdErr) {
 
             // open a process
             using (Process process = new Process()) {
@@ -63,6 +75,16 @@ namespace AutoNS {
                     stdErr = "[Auto.run Exception] " + ex.Message;
                 }
             }
+        }
+
+        public static bool runWorkerAsync(string fileName, string args, string[] commands)
+        {
+            if (!bgw.IsBusy) {
+                bgw.RunWorkerAsync();
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -116,7 +138,9 @@ namespace AutoNS {
         /// <param name="outputDir">directory to create subdirectories within</param>
         /// <param name="regex">match string</param>
         /// <returns>false if an exception was thrown</returns>
-        public static bool moveToSeparateDirs(DirectoryInfo currentDir, DirectoryInfo outputDir = null, string regex = "") {
+        public static bool moveToSeparateDirs(DirectoryInfo currentDir, 
+            DirectoryInfo outputDir = null, string regex = "") 
+        {
             try {
 
                 // create outputDir if it is given and it doesn't exist
@@ -128,12 +152,10 @@ namespace AutoNS {
                 string outPath = (outputDir != null) ? outputDir.FullName : currentDir.FullName;
 
                 foreach (FileInfo file in currentDir.GetFiles()) {
-
                     if (file.Exists) {
 
                         // if we're given a matchstring
                         if (regex != "") {
-
                             if (Regex.IsMatch(file.Name, regex)) {
 
                                 // move file to a directory of the matched string
@@ -143,6 +165,7 @@ namespace AutoNS {
                                     file.Name
                                 );
                             }
+
                         } else {
 
                             // move file to a directory of the same name

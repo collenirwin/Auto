@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace AutoNS {
@@ -13,13 +11,17 @@ namespace AutoNS {
 
         #region Private
 
+        private const int HISTORY_MAX = 100;
+        private List<string> history  = new List<string>(HISTORY_MAX);
+        private int historyIndex      = -1;
+
         private Color _outputColor = Color.LightBlue;
         private Color _errorColor  = Color.LightCoral;
 
         private Process _process;
 
         private string _prompt = ">:";
-        private string _path = "cmd";
+        private string _path   = "cmd";
 
         private delegate void _updateConsole(string text, Color color);
 
@@ -57,6 +59,10 @@ namespace AutoNS {
             get { return _path; }
         }
 
+        public string lastCommand {
+            get { return history[0]; }
+        }
+
         #endregion
 
         #endregion
@@ -68,25 +74,30 @@ namespace AutoNS {
         }
 
         private void updateConsole(string text, Color color) {
+            try {
 
-            // thread safety
-            if (txtConsole.InvokeRequired) {
-                _updateConsole uc = new _updateConsole(updateConsole);
-                txtConsole.Invoke(uc, new object[] { text, color });
-            } else {
-                int start = txtConsole.TextLength;
+                // thread safety
+                if (txtConsole.InvokeRequired) {
+                    _updateConsole uc = new _updateConsole(updateConsole);
+                    txtConsole.Invoke(uc, new object[] { text, color });
+                } else {
+                    int start = txtConsole.TextLength;
 
-                // add text
-                txtConsole.AppendText(text);
+                    // add text
+                    txtConsole.AppendText(text);
 
-                // color text
-                txtConsole.SelectionStart  = start;
-                txtConsole.SelectionLength = text.Length;
-                txtConsole.SelectionColor  = color;
-                txtConsole.SelectionLength = 0;
+                    // color text
+                    txtConsole.SelectionStart = start;
+                    txtConsole.SelectionLength = text.Length;
+                    txtConsole.SelectionColor = color;
+                    txtConsole.SelectionLength = 0;
 
-                txtConsole.SelectionStart = txtConsole.TextLength - 1;
-                txtConsole.ScrollToCaret();
+                    txtConsole.SelectionStart = txtConsole.TextLength - 1;
+                    txtConsole.ScrollToCaret();
+                }
+
+            } catch { // the process is still running
+                stop();
             }
         }
 
@@ -100,6 +111,42 @@ namespace AutoNS {
             }
 
             _prompt = newPrompt;
+        }
+
+        /// <summary>
+        /// Sends a command to the process running within AutoConsole
+        /// </summary>
+        /// <param name="command">command to send</param>
+        /// <param name="showErrorOnConsole">if there's an error, this controls whether it is displayed on the console</param>
+        /// <returns>false if an exception is thrown</returns>
+        public bool sendCommand(string command, bool showErrorOnConsole = true) {
+
+            try {
+                string commandLower = command.ToLower();
+
+                if (commandLower == "clear" || commandLower == "cls") {
+                    txtConsole.Clear();
+                    txtConsole.Refresh();
+                } else if (commandLower == "reset") {
+                    kill();
+                    start();
+                } else {
+
+                    // pass the command over stdin
+                    _process.StandardInput.WriteLine(command);
+                }
+
+                addCommand(command);
+
+            } catch (Exception ex) {
+                if (showErrorOnConsole) {
+                    updateConsole("[AutoConsole Exception] " + ex.Message + Environment.NewLine, errorColor);
+                }
+                
+                return false;
+            }
+
+            return true;
         }
 
         private void txtConsoleInput_KeyDown(object sender, KeyEventArgs e) {
@@ -118,28 +165,50 @@ namespace AutoNS {
                 // we have a command
                 if (txtConsoleInput.TextLength > prompt.Length) {
 
-                    try {
-                        string command = txtConsoleInput.Text.Substring(prompt.Length).Trim();
-                        string commandLower = command.ToLower();
-
-                        if (commandLower == "clear" || commandLower == "cls") {
-                            txtConsole.Clear();
-                        } else if (commandLower == "exit") {
-                            stop();
-                        } else {
-
-                            // pass the command over stdin
-                            _process.StandardInput.WriteLine(command);
-                        }
-
-                    } catch (Exception ex) {
-                        updateConsole("[AutoConsole Exception] " + ex.Message + Environment.NewLine, errorColor);
-                    }
-
+                    // send it
+                    sendCommand(txtConsoleInput.Text.Substring(prompt.Length).Trim());
+                    
                     // erase the command
                     txtConsoleInput.Text = prompt;
                 }
+
+            } else if (e.KeyCode == Keys.Up) { // going up in history
+                showHistoryItem(1);
+            } else if (e.KeyCode == Keys.Down) { // going down in history
+                showHistoryItem(-1);
             }
+        }
+
+        private void showHistoryItem(int up) {
+            if (history.Count == 0) {
+                historyIndex = -1;
+                return;
+            }
+
+            historyIndex += up;
+
+            if (historyIndex < 0) {
+                historyIndex = 0;
+            } else if (historyIndex > history.Count - 1) {
+                historyIndex = history.Count - 1;
+            }
+
+            txtConsoleInput.Text = prompt + history[historyIndex];
+        }
+
+        // add a command to history, but keep history.Count below HISTORY_MAX
+        private void addCommand(string command) {
+
+            // remove from the end if we reach the max
+            if (history.Count == HISTORY_MAX) {
+                history.RemoveAt(HISTORY_MAX - 1);
+            }
+
+            // add to the beginning
+            history.Insert(0, command);
+
+            // reset historyIndex
+            historyIndex = -1;
         }
 
         private void txtConsoleInput_TextChanged(object sender, EventArgs e) {
@@ -157,11 +226,6 @@ namespace AutoNS {
             if (txtConsoleInput.SelectionStart < prompt.Length) {
                 txtConsoleInput.SelectionStart = prompt.Length;
             }
-        }
-
-        private void txtConsoleInput_KeyPress(object sender, KeyPressEventArgs e) {
-
-            
         }
 
         public void start(string fileName, string args = "") {
@@ -216,6 +280,26 @@ namespace AutoNS {
             return false;
         }
 
+        public bool kill() {
+            if (_process != null) {
+
+                try {
+                    _process.CancelOutputRead();
+                    _process.CancelErrorRead();
+                   
+                    _process.Kill();
+                    _process.Dispose();
+
+                    return true;
+
+                } catch {
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
         private void updateConsole(string text) {
             txtConsole.AppendText(text);
         }
@@ -231,6 +315,32 @@ namespace AutoNS {
                 updateConsole(e.Data + Environment.NewLine, errorColor);
             }
         }
+
+        #region Options
+
+        private void btnOptions_Click(object sender, EventArgs e) {
+
+            // toggle options menu
+            pnlOptions.Visible = !pnlOptions.Visible;
+        }
+
+        private void txtConsole_Click(object sender, EventArgs e) {
+            pnlOptions.Hide();
+        }
+
+        private void btnClear_Click(object sender, EventArgs e) {
+
+            // clear the console
+            sendCommand("clear");
+        }
+
+        private void btnReset_Click(object sender, EventArgs e) {
+
+            // stop and restart the console
+            sendCommand("reset");
+        }
+
+        #endregion
 
         #endregion
     }

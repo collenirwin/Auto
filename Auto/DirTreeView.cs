@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -28,9 +29,7 @@ namespace BoinEditNS {
             get { return this._directory; }
             set {
                 this._directory = value;
-                if (value != null && value.Exists) {
-                    this._hasDir = true;
-                }
+                this._hasDir = value != null && value.Exists;
             }
         }
 
@@ -54,6 +53,10 @@ namespace BoinEditNS {
         #region Methods
 
         #region Public
+
+        public DirTreeView() {
+            TreeViewNodeSorter = new DirTreeViewSorter();
+        }
 
         /// <summary>
         /// Shows a FolderBrowserDialog to select a directory, then calls loadDir() with selected directory
@@ -97,6 +100,10 @@ namespace BoinEditNS {
                     );
                 }
 
+                BeginUpdate();
+                Sort();
+                EndUpdate();
+
                 this._hasDir = true;
                 return true;
 
@@ -139,6 +146,8 @@ namespace BoinEditNS {
         }
 
         private bool search(DirectoryInfo dir, TreeNodeCollection nodes, bool recursive = false) {
+            BeginUpdate();
+
             try {
                 foreach (DirectoryInfo di in dir.GetDirectories()) {
                     if (di.Exists) {
@@ -176,9 +185,13 @@ namespace BoinEditNS {
                         nodes.Add(itm);
                     }
                 }
-
+                
+                EndUpdate();
                 return true;
+
             } catch {
+
+                EndUpdate();
                 return false;
             }
         }
@@ -204,4 +217,35 @@ namespace BoinEditNS {
 
         #endregion
     }
+
+    /// <summary>
+    /// Needed to sort the nodes within DirTreeView
+    /// </summary>
+    public class DirTreeViewSorter : IComparer {
+
+        public int Compare(object x, object y) {
+            var nodeX = x as TreeNode;
+            var nodeY = y as TreeNode;
+
+            // both folders or both files
+            if ((nodeX.Tag is DirectoryInfo && nodeY.Tag is DirectoryInfo) ||
+                (nodeX.Tag is FileInfo && nodeY.Tag is FileInfo)) 
+            {
+                return nodeX.Text.CompareTo(nodeY.Text);
+
+            // x is folder, y is file
+            } else if (nodeX.Tag is DirectoryInfo && !(nodeY.Tag is DirectoryInfo)) {
+
+                return -1;
+
+            // y is folder, x is file
+            } else if (nodeY.Tag is DirectoryInfo && !(nodeX.Tag is DirectoryInfo)) {
+
+                return 1;
+            }
+
+            return nodeX.Text.CompareTo(nodeY.Text);
+        }
+    }
+
 }

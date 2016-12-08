@@ -34,5 +34,29 @@ namespace AutoNS.Properties {
                 this["explorerPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool explorerOpen {
+            get {
+                return ((bool)(this["explorerOpen"]));
+            }
+            set {
+                this["explorerOpen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool consoleOpen {
+            get {
+                return ((bool)(this["consoleOpen"]));
+            }
+            set {
+                this["consoleOpen"] = value;
+            }
+        }
     }
 }
