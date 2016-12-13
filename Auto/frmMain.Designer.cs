@@ -53,6 +53,8 @@
             this.directoryBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnSelectionHack = new System.Windows.Forms.Button();
             this.topLine = new System.Windows.Forms.Label();
+            this.radCopy = new System.Windows.Forms.RadioButton();
+            this.radMove = new System.Windows.Forms.RadioButton();
             this.btnNavCompare = new BoinBoxNS.BoinBox();
             this.btnNavCompileRun = new BoinBoxNS.BoinBox();
             this.btnNavOrganize = new BoinBoxNS.BoinBox();
@@ -137,6 +139,8 @@
             this.pnlOrganize.AutoScroll = true;
             this.pnlOrganize.AutoScrollMargin = new System.Drawing.Size(0, 10);
             this.pnlOrganize.BackColor = System.Drawing.Color.White;
+            this.pnlOrganize.Controls.Add(this.radMove);
+            this.pnlOrganize.Controls.Add(this.radCopy);
             this.pnlOrganize.Controls.Add(this.btnOpenInExplorerOrganize);
             this.pnlOrganize.Controls.Add(this.btnOpenInDBOrganize);
             this.pnlOrganize.Controls.Add(this.btnOrganizeGo);
@@ -155,7 +159,7 @@
             this.pnlOrganize.Controls.Add(this.label2);
             this.pnlOrganize.Location = new System.Drawing.Point(137, 17);
             this.pnlOrganize.Name = "pnlOrganize";
-            this.pnlOrganize.Size = new System.Drawing.Size(508, 297);
+            this.pnlOrganize.Size = new System.Drawing.Size(508, 321);
             this.pnlOrganize.TabIndex = 6;
             // 
             // label5
@@ -453,6 +457,28 @@
             this.topLine.Size = new System.Drawing.Size(685, 2);
             this.topLine.TabIndex = 8;
             // 
+            // radCopy
+            // 
+            this.radCopy.AutoSize = true;
+            this.radCopy.Checked = true;
+            this.radCopy.Location = new System.Drawing.Point(41, 247);
+            this.radCopy.Name = "radCopy";
+            this.radCopy.Size = new System.Drawing.Size(49, 17);
+            this.radCopy.TabIndex = 22;
+            this.radCopy.TabStop = true;
+            this.radCopy.Text = "Copy";
+            this.radCopy.UseVisualStyleBackColor = true;
+            // 
+            // radMove
+            // 
+            this.radMove.AutoSize = true;
+            this.radMove.Location = new System.Drawing.Point(96, 247);
+            this.radMove.Name = "radMove";
+            this.radMove.Size = new System.Drawing.Size(52, 17);
+            this.radMove.TabIndex = 23;
+            this.radMove.Text = "Move";
+            this.radMove.UseVisualStyleBackColor = true;
+            // 
             // btnNavCompare
             // 
             this.btnNavCompare.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -614,7 +640,7 @@
             this.btnOpenInExplorerOrganize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenInExplorerOrganize.Font = new System.Drawing.Font("Calibri", 9F);
             this.btnOpenInExplorerOrganize.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.btnOpenInExplorerOrganize.Location = new System.Drawing.Point(321, 256);
+            this.btnOpenInExplorerOrganize.Location = new System.Drawing.Point(321, 270);
             this.btnOpenInExplorerOrganize.MouseDownBackColor = System.Drawing.Color.LightSkyBlue;
             this.btnOpenInExplorerOrganize.MouseDownForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.btnOpenInExplorerOrganize.MouseOverBackColor = System.Drawing.SystemColors.HotTrack;
@@ -625,6 +651,7 @@
             this.btnOpenInExplorerOrganize.Text = "Open in Explorer";
             this.btnOpenInExplorerOrganize.UseVisualStyleBackColor = false;
             this.btnOpenInExplorerOrganize.Visible = false;
+            this.btnOpenInExplorerOrganize.Click += new System.EventHandler(this.btnOpenInExplorerOrganize_Click);
             // 
             // btnOpenInDBOrganize
             // 
@@ -639,7 +666,7 @@
             this.btnOpenInDBOrganize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenInDBOrganize.Font = new System.Drawing.Font("Calibri", 9F);
             this.btnOpenInDBOrganize.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.btnOpenInDBOrganize.Location = new System.Drawing.Point(158, 256);
+            this.btnOpenInDBOrganize.Location = new System.Drawing.Point(158, 270);
             this.btnOpenInDBOrganize.MouseDownBackColor = System.Drawing.Color.LightSkyBlue;
             this.btnOpenInDBOrganize.MouseDownForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.btnOpenInDBOrganize.MouseOverBackColor = System.Drawing.SystemColors.HotTrack;
@@ -650,6 +677,7 @@
             this.btnOpenInDBOrganize.Text = "Open in Directory Browser";
             this.btnOpenInDBOrganize.UseVisualStyleBackColor = false;
             this.btnOpenInDBOrganize.Visible = false;
+            this.btnOpenInDBOrganize.Click += new System.EventHandler(this.btnOpenInDBOrganize_Click);
             // 
             // btnOrganizeGo
             // 
@@ -664,7 +692,7 @@
             this.btnOrganizeGo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOrganizeGo.Font = new System.Drawing.Font("Calibri", 9F);
             this.btnOrganizeGo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.btnOrganizeGo.Location = new System.Drawing.Point(32, 256);
+            this.btnOrganizeGo.Location = new System.Drawing.Point(32, 270);
             this.btnOrganizeGo.MouseDownBackColor = System.Drawing.Color.LightSkyBlue;
             this.btnOrganizeGo.MouseDownForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.btnOrganizeGo.MouseOverBackColor = System.Drawing.SystemColors.HotTrack;
@@ -905,6 +933,7 @@
             this.MinimumSize = new System.Drawing.Size(700, 400);
             this.Name = "frmMain";
             this.Text = "Auto";
+            this.Activated += new System.EventHandler(this.frmMain_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.spltSideBar.Panel1.ResumeLayout(false);
             this.spltSideBar.Panel2.ResumeLayout(false);
@@ -975,6 +1004,8 @@
         private BoinBoxNS.BoinBox btnOrganizeGo;
         private BoinBoxNS.BoinBox btnOpenInDBOrganize;
         private BoinBoxNS.BoinBox btnOpenInExplorerOrganize;
+        private System.Windows.Forms.RadioButton radMove;
+        private System.Windows.Forms.RadioButton radCopy;
 
 
     }

@@ -80,16 +80,18 @@ namespace BoinEditNS {
         /// Loads all directories and files in DirTreeView.directory into the DirTreeView. 
         /// </summary>
         /// <returns>true if DirTreeView.directory is a valid DirectoryInfo</returns>
-        public bool loadDir() {
+        public bool loadDir(bool refresh = false) {
 
             // if we have a directory
             if (this.directory != null && this.directory.Exists) {
 
-                this.Nodes.Clear(); // clear all nodes (we'll be adding some)
+                if (!refresh) {
+                    this.Nodes.Clear(); // clear all nodes (we'll be adding some)
+                }
                 
                 this.ioErrorMsg = "";
 
-                if (!search(this.directory, this.Nodes)) { // start the dir searcher
+                if (!search(this.directory, this.Nodes, false, refresh)) { // start the dir searcher
                     this.ioErrorMsg += " " + this.directory.Name + "\r\n";
                 }
                 
@@ -120,6 +122,10 @@ namespace BoinEditNS {
             return loadDir();
         }
 
+        public bool refresh() {
+            return loadDir(true);
+        }
+
         /// <summary>
         /// Clears the current directory, setting DirTreeView.directory to null
         /// </summary>
@@ -145,12 +151,12 @@ namespace BoinEditNS {
             }
         }
 
-        private bool search(DirectoryInfo dir, TreeNodeCollection nodes, bool recursive = false) {
-            BeginUpdate();
+        private bool search(DirectoryInfo dir, TreeNodeCollection nodes, bool recursive = false, bool refresh = false) {
+            //BeginUpdate();
 
             try {
                 foreach (DirectoryInfo di in dir.GetDirectories()) {
-                    if (di.Exists) {
+                    if (di.Exists && (!refresh || (refresh && !hasDirRefresh(di)))) {
                         TreeNode itm  = new TreeNode();
                         itm.NodeFont  = new Font(this.Font, FontStyle.Bold);
                         itm.ForeColor = _dirColor;
@@ -176,13 +182,29 @@ namespace BoinEditNS {
                 }
 
                 foreach (FileInfo fi in dir.GetFiles()) {
-                    if (fi.Exists) {
+                    if (fi.Exists && (!refresh || (refresh && !hasFileRefresh(fi)))) {
                         TreeNode itm = new TreeNode();
                         itm.Text = fi.Name;
                         itm.Tag = fi;
                         itm.ForeColor = _fileColor;
 
                         nodes.Add(itm);
+                    }
+                }
+
+                // remove all files/dirs that don't exist anymore
+                if (refresh) {
+                    foreach (TreeNode node in Nodes) {
+                        if (node.Tag is DirectoryInfo) {
+                            if (!(node.Tag as DirectoryInfo).Exists) {
+                                Nodes.Remove(node);
+                            }
+
+                        } else if (node.Tag is FileInfo) {
+                            if (!(node.Tag as FileInfo).Exists) {
+                                Nodes.Remove(node);
+                            }
+                        }
                     }
                 }
                 
@@ -211,6 +233,30 @@ namespace BoinEditNS {
             } catch {
                 ioErrorMsg += " " + dir.Name + "\r\n";
             }
+        }
+
+        private bool hasDirRefresh(DirectoryInfo dir) {
+            foreach (TreeNode node in Nodes) {
+                if (node.Tag is DirectoryInfo) {
+                    if ((node.Tag as DirectoryInfo).FullName == dir.FullName) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool hasFileRefresh(FileInfo file) {
+            foreach (TreeNode node in Nodes) {
+                if (node.Tag is FileInfo) {
+                    if ((node.Tag as FileInfo).FullName == file.FullName) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         #endregion

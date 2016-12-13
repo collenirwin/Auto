@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using AutoNS.Properties;
 using BoinBoxNS;
 using BoinMsgNS;
+using System.Diagnostics;
 
 namespace AutoNS {
     public partial class frmMain : Form {
@@ -14,6 +15,8 @@ namespace AutoNS {
         BoinBox[] navButtons = new BoinBox[4];
 
         public bool saveExplorerPath = true;
+
+        DirectoryInfo organizeDir;
 
         #endregion
 
@@ -77,8 +80,12 @@ namespace AutoNS {
 
         private void btnOpenDir_Click(object sender, EventArgs e) {
             openDir();
-            spltSideBar.Panel1Collapsed = false;
-            directoryBrowserToolStripMenuItem.Checked = true;
+        }
+
+        private void frmMain_Activated(object sender, EventArgs e) {
+            if (explorer.hasDir) {
+                explorer.refresh();
+            }
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e) {
@@ -86,8 +93,17 @@ namespace AutoNS {
             setSettings();
         }
 
-        private void openDir() {
-            explorer.openDir();
+        private void openDir(DirectoryInfo dir = null) {
+            if (dir == null) {
+                explorer.openDir();
+            } else {
+                if (!explorer.loadDir(dir)) {
+                    BoinMsg.show(Constants.MSG_CANT_OPEN_ERR, Constants.MSG_CAPTION_ERR);
+                }
+            }
+
+            spltSideBar.Panel1Collapsed = false;
+            directoryBrowserToolStripMenuItem.Checked = true;
 
             if (explorer.hasDir) {
                 btnOpenDir.Hide();
@@ -237,15 +253,56 @@ namespace AutoNS {
             if (Directory.Exists(txtStartDir.Text)
                 && (chkSameDir.Checked || Directory.Exists(txtOutputDir.Text))) 
             {
+                var outputDir = (chkSameDir.Checked) ? 
+                    new DirectoryInfo(txtStartDir.Text) : 
+                    new DirectoryInfo(txtOutputDir.Text);
+
+                bool worked = Auto.moveToSeparateDirs(
+                    new DirectoryInfo(txtStartDir.Text), // start                    
+                    outputDir, // if same dir is checked, use start dir, else use specified output dir
+                    txtMatchString.Text, // RegEx match string
+                    radMove.Checked // move or copy
+                );
+
+                if (worked) {
+                    organizeDir = outputDir;
+
+                    btnOpenInDBOrganize.Show();
+                    btnOpenInExplorerOrganize.Show();
+                } else {
+                    BoinMsg.show("There was an error when attempting to move the files.", Constants.MSG_CAPTION_ERR);
+                }
 
             } else {
                 BoinMsg.show("Please provide valid starting and output directories.", Constants.MSG_CAPTION);
             }
         }
 
-        #endregion
+        private void btnOpenInDBOrganize_Click(object sender, EventArgs e) {
+            if (organizeDir != null && organizeDir.Exists) {
+                openDir(organizeDir);
+            } else {
+                BoinMsg.show(Constants.MSG_CANT_OPEN_ERR, Constants.MSG_CAPTION_ERR);
+            }
+        }
 
-       
+        private void btnOpenInExplorerOrganize_Click(object sender, EventArgs e) {
+            if (organizeDir != null && organizeDir.Exists) {
+                try {
+                    Process.Start("explorer", organizeDir.FullName);
+                } catch (Exception ex) {
+                    BoinMsg.show("Failed to open Windows Explorer with the following error:\r\n"
+                        + ex.Message,
+                        Constants.MSG_CAPTION_ERR
+                    );
+                }
+
+            } else {
+                BoinMsg.show(Constants.MSG_CANT_OPEN_ERR, Constants.MSG_CAPTION_ERR);
+            }
+        }
+
+        #endregion
 
         #region COMPILE AND RUN
 

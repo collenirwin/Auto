@@ -139,7 +139,7 @@ namespace AutoNS {
         /// <param name="regex">match string</param>
         /// <returns>false if an exception was thrown</returns>
         public static bool moveToSeparateDirs(DirectoryInfo currentDir, 
-            DirectoryInfo outputDir = null, string regex = "") 
+            DirectoryInfo outputDir = null, string regex = "", bool move = false) 
         {
             try {
 
@@ -162,14 +162,15 @@ namespace AutoNS {
                                 safeMove(
                                     file.FullName,
                                     outPath + "\\" + Regex.Match(file.Name, regex).ToString(),
-                                    file.Name
+                                    file.Name,
+                                    move
                                 );
                             }
 
                         } else {
 
                             // move file to a directory of the same name
-                            safeMove(file.FullName, outPath + "\\" + file.Name, file.Name);
+                            safeMove(file.FullName, outPath + "\\" + file.Name, file.Name, move);
                         }
                     }
                 }
@@ -181,7 +182,7 @@ namespace AutoNS {
             return true;
         }
 
-        private static bool safeMove(string filePath, string dirPath, string newFileName) {
+        private static bool safeMove(string filePath, string dirPath, string newFileName, bool move) {
             try {
 
                 // if the directory doesn't exit, create it
@@ -190,7 +191,12 @@ namespace AutoNS {
                 }
                 
                 // move the file there
-                File.Move(filePath, dirPath + "\\" + newFileName);
+                if (move) {
+                    File.Move(filePath, dirPath + "\\" + newFileName);
+                } else { // or copy
+                    File.Copy(filePath, dirPath + "\\" + newFileName);
+                }
+                
 
             } catch {
                 return false;
